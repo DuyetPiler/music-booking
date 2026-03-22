@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng nhập — StageBook</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .auth-page {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    /* ── Left panel ── */
+    .auth-left {
+      position: relative;
+      background: var(--bg2);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 48px;
+      overflow: hidden;
+    }
+    .auth-left-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 30% 70%, rgba(201,168,76,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 50% at 80% 20%, rgba(42,173,168,0.07) 0%, transparent 50%);
+    }
+    .auth-left-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.015'%3E%3Cpath d='M0 0h1v1H0zM16 16h1v1h-1z'/%3E%3C/g%3E%3C/svg%3E");
+    }
+    .auth-left-content { position: relative; z-index: 1; }
+
+    .auth-quote {
+      position: relative;
+      z-index: 1;
+    }
+    .auth-quote blockquote {
+      font-family: var(--font-head);
+      font-style: italic;
+      font-size: 1.5rem;
+      line-height: 1.5;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+    .auth-quote blockquote span { color: var(--gold); }
+    .auth-quote cite {
+      font-size: 13px;
+      color: var(--text-3);
+      font-style: normal;
+    }
+
+    .auth-testimonial {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 20px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      backdrop-filter: blur(10px);
+    }
+    .auth-testimonial-avatar {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 2px solid var(--gold-dk);
+    }
+    .auth-testimonial-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .auth-testimonial-text { font-size: 13px; color: var(--text-2); line-height: 1.55; }
+    .auth-testimonial-name { font-weight: 600; color: var(--text); font-size: 13px; margin-top: 4px; }
+
+    /* ── Right panel ── */
+    .auth-right {
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 40px;
+    }
+    .auth-form-wrap { width: 100%; max-width: 400px; }
+
+    .auth-logo {
+      font-family: var(--font-head);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 36px;
+      display: inline-block;
+    }
+    .auth-logo span { color: var(--gold); }
+
+    .auth-title { font-size: 1.7rem; margin-bottom: 6px; }
+    .auth-subtitle { color: var(--text-2); font-size: 14px; margin-bottom: 36px; }
+
+    .auth-form { display: flex; flex-direction: column; gap: 16px; }
+
+    .input-icon-wrap {
+      position: relative;
+    }
+    .input-icon-wrap .icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-3);
+      font-size: 16px;
+      pointer-events: none;
+    }
+    .input-icon-wrap .form-control { padding-left: 42px; }
+    .input-icon-wrap .toggle-pw {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-3);
+      cursor: pointer;
+      font-size: 15px;
+      transition: var(--trans);
+      background: none;
+      border: none;
+      padding: 2px;
+    }
+    .input-icon-wrap .toggle-pw:hover { color: var(--text); }
+
+    .form-control.error {
+      border-color: #e85a6e;
+      box-shadow: 0 0 0 3px rgba(181,41,62,0.15);
+    }
+    .field-error {
+      font-size: 12px;
+      color: #e85a6e;
+      margin-top: -8px;
+    }
+
+    .auth-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--text-3);
+      font-size: 12px;
+    }
+    .auth-divider::before, .auth-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .btn-social {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 12px;
+      border-radius: var(--r-md);
+      border: 1.5px solid var(--border2);
+      background: transparent;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 500;
+      transition: var(--trans);
+      cursor: pointer;
+    }
+    .btn-social:hover {
+      border-color: var(--gold);
+      background: rgba(201,168,76,0.05);
+    }
+    .btn-social svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+    .remember-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+    }
+    .remember-row label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      color: var(--text-2);
+    }
+    .remember-row input[type="checkbox"] {
+      width: 15px; height: 15px;
+      accent-color: var(--gold);
+    }
+    .remember-row a { color: var(--gold); transition: var(--trans); }
+    .remember-row a:hover { color: var(--gold-lt); }
+
+    .auth-footer {
+      margin-top: 28px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-3);
+    }
+    .auth-footer a { color: var(--gold); font-weight: 500; }
+    .auth-footer a:hover { color: var(--gold-lt); }
+
+    .btn-submit {
+      width: 100%;
+      justify-content: center;
+      padding: 14px;
+      font-size: 15px;
+      border-radius: var(--r-md);
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-submit .spinner {
+      display: none;
+      width: 18px; height: 18px;
+      border: 2px solid rgba(0,0,0,0.2);
+      border-top-color: #0a0a0f;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    .btn-submit.loading .spinner { display: block; }
+    .btn-submit.loading .btn-text { display: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .auth-page { grid-template-columns: 1fr; }
+      .auth-left  { display: none; }
+      .auth-right { min-height: 100vh; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="auth-page">
+
+  <!-- ── Left: Visual Panel ──────────────────────────── -->
+  <div class="auth-left">
+    <div class="auth-left-bg"></div>
+
+    <div class="auth-left-content">
+      <a href="index.html" class="nav-logo" style="font-family:var(--font-head);font-size:1.5rem;font-weight:700;color:var(--text)">
+        Stage<span style="color:var(--gold)">Book</span><span style="width:7px;height:7px;background:var(--gold);border-radius:50%;display:inline-block;margin-left:4px"></span>
+      </a>
+    </div>
+
+    <div class="auth-quote">
+      <blockquote>
+        "Nơi <span>âm nhạc</span> gặp<br>những cơ hội mới"
+      </blockquote>
+      <cite>— StageBook, kết nối không giới hạn</cite>
+    </div>
+
+    <div class="auth-testimonial">
+      <div class="auth-testimonial-avatar">
+        <img src="https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=100&q=80" alt="">
+      </div>
+      <div>
+        <p class="auth-testimonial-text">"StageBook giúp tôi có thêm 8-10 show mỗi tháng mà không cần tìm kiếm thủ công nữa."</p>
+        <p class="auth-testimonial-name">Linh Anh · Ca sĩ acoustic, TP.HCM</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Right: Form Panel ───────────────────────────── -->
+  <div class="auth-right">
+    <div class="auth-form-wrap fade-up">
+
+      <a href="index.html" class="auth-logo">Stage<span>Book</span></a>
+
+      <h1 class="auth-title">Chào mừng trở lại</h1>
+      <p class="auth-subtitle">Đăng nhập để tiếp tục đặt lịch nghệ sĩ</p>
+
+      <form class="auth-form" id="login-form" novalidate>
+
+        <!-- Email -->
+        <div class="form-group">
+          <label for="email">Email</label>
+          <div class="input-icon-wrap">
+            <span class="icon">✉</span>
+            <input
+              id="email" name="email" type="email"
+              class="form-control"
+              placeholder="email@example.com"
+              autocomplete="email">
+          </div>
+          <span class="field-error" id="email-err"></span>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+          <label for="password">Mật khẩu</label>
+          <div class="input-icon-wrap">
+            <span class="icon">🔒</span>
+            <input
+              id="password" name="password" type="password"
+              class="form-control"
+              placeholder="••••••••"
+              autocomplete="current-password">
+            <button type="button" class="toggle-pw" onclick="togglePw('password', this)" title="Hiện/ẩn mật khẩu">👁</button>
+          </div>
+          <span class="field-error" id="pw-err"></span>
+        </div>
+
+        <!-- Remember / Forgot -->
+        <div class="remember-row">
+          <label>
+            <input type="checkbox" id="remember"> Ghi nhớ đăng nhập
+          </label>
+          <a href="#">Quên mật khẩu?</a>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="btn btn-gold btn-submit" id="login-btn">
+          <span class="btn-text">Đăng nhập</span>
+          <span class="spinner"></span>
+        </button>
+
+      </form>
+
+      <!-- Divider -->
+      <div class="auth-divider" style="margin: 24px 0">hoặc tiếp tục với</div>
+
+      <!-- Social -->
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <button class="btn-social" onclick="showToast('Tính năng đang phát triển 🚧')">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+          </svg>
+          Đăng nhập với Google
+        </button>
+        <button class="btn-social" onclick="showToast('Tính năng đang phát triển 🚧')">
+          <svg viewBox="0 0 24 24" fill="#1877F2" xmlns="http://www.w3.org/2000/svg">
+            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+          </svg>
+          Đăng nhập với Facebook
+        </button>
+      </div>
+
+      <div class="auth-footer">
+        Chưa có tài khoản? <a href="register.html">Đăng ký miễn phí →</a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="js/data.js"></script>
+<script src="js/render.js"></script>
+<script>
+function togglePw(id, btn) {
+  const input = document.getElementById(id);
+  const isText = input.type === 'text';
+  input.type = isText ? 'password' : 'text';
+  btn.textContent = isText ? '👁' : '🙈';
+}
+
+document.getElementById('login-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  let valid = true;
+
+  const email = document.getElementById('email');
+  const pw    = document.getElementById('password');
+
+  // Reset
+  [email, pw].forEach(el => { el.classList.remove('error'); });
+  document.getElementById('email-err').textContent = '';
+  document.getElementById('pw-err').textContent    = '';
+
+  // Validate
+  if (!email.value.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+    email.classList.add('error');
+    document.getElementById('email-err').textContent = 'Email không hợp lệ';
+    valid = false;
+  }
+  if (pw.value.length < 6) {
+    pw.classList.add('error');
+    document.getElementById('pw-err').textContent = 'Mật khẩu ít nhất 6 ký tự';
+    valid = false;
+  }
+  if (!valid) return;
+
+  // Simulate login
+  const btn = document.getElementById('login-btn');
+  btn.classList.add('loading');
+  btn.disabled = true;
+
+  setTimeout(() => {
+    // TODO: replace with real API call
+    showToast('Đăng nhập thành công! 🎉');
+    setTimeout(() => window.location.href = 'index.html', 1000);
+  }, 1400);
+});
+</script>
+</body>
+</html>

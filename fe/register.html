@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng ký — StageBook</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .auth-page {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    /* ── Left ── */
+    .auth-left {
+      position: relative;
+      background: var(--bg2);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 48px;
+      overflow: hidden;
+    }
+    .auth-left-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 20% 50%, rgba(42,173,168,0.1) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 50% at 80% 80%, rgba(201,168,76,0.1) 0%, transparent 50%);
+    }
+    .auth-left-content { position: relative; z-index: 1; }
+
+    /* Role cards on the left */
+    .role-showcase { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 14px; }
+    .role-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 20px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      backdrop-filter: blur(10px);
+      transition: var(--trans);
+    }
+    .role-card:hover { border-color: var(--gold-dk); }
+    .role-icon { font-size: 2rem; flex-shrink: 0; }
+    .role-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+    .role-card p { font-size: 12px; color: var(--text-2); line-height: 1.4; }
+
+    .auth-left-footer { position: relative; z-index: 1; }
+    .stat-row { display: flex; gap: 32px; }
+    .stat-item .num { font-family: var(--font-head); font-size: 1.6rem; font-weight: 700; color: var(--gold); }
+    .stat-item .desc { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+
+    /* ── Right ── */
+    .auth-right {
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 40px;
+      overflow-y: auto;
+    }
+    .auth-form-wrap { width: 100%; max-width: 420px; }
+
+    .auth-logo {
+      font-family: var(--font-head);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 36px;
+      display: inline-block;
+    }
+    .auth-logo span { color: var(--gold); }
+
+    .auth-title { font-size: 1.7rem; margin-bottom: 6px; }
+    .auth-subtitle { color: var(--text-2); font-size: 14px; margin-bottom: 32px; }
+
+    /* Role selector */
+    .role-selector {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    .role-option { display: none; }
+    .role-label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 10px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-md);
+      cursor: pointer;
+      transition: var(--trans);
+      text-align: center;
+    }
+    .role-label .role-emoji { font-size: 1.6rem; }
+    .role-label .role-name { font-size: 13px; font-weight: 600; color: var(--text-2); }
+    .role-label .role-desc { font-size: 11px; color: var(--text-3); }
+    .role-option:checked + .role-label {
+      border-color: var(--gold);
+      background: rgba(201,168,76,0.07);
+    }
+    .role-option:checked + .role-label .role-name { color: var(--gold); }
+
+    /* Form */
+    .auth-form { display: flex; flex-direction: column; gap: 14px; }
+
+    .input-icon-wrap { position: relative; }
+    .input-icon-wrap .icon {
+      position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+      color: var(--text-3); font-size: 15px; pointer-events: none;
+    }
+    .input-icon-wrap .form-control { padding-left: 42px; }
+    .input-icon-wrap .toggle-pw {
+      position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+      color: var(--text-3); cursor: pointer; font-size: 15px; transition: var(--trans);
+      background: none; border: none;
+    }
+    .input-icon-wrap .toggle-pw:hover { color: var(--text); }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .form-control.error { border-color: #e85a6e; box-shadow: 0 0 0 3px rgba(181,41,62,0.15); }
+    .field-error { font-size: 12px; color: #e85a6e; margin-top: -6px; min-height: 16px; }
+
+    /* Password strength */
+    .pw-strength { margin-top: -8px; }
+    .pw-strength-bar {
+      height: 3px;
+      background: var(--surface2);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: 4px;
+    }
+    .pw-strength-fill {
+      height: 100%;
+      border-radius: 2px;
+      transition: width 0.3s ease, background 0.3s ease;
+      width: 0%;
+    }
+    .pw-strength-label { font-size: 11px; color: var(--text-3); }
+
+    .terms-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--text-2);
+      cursor: pointer;
+    }
+    .terms-row input { margin-top: 3px; accent-color: var(--gold); flex-shrink: 0; }
+    .terms-row a { color: var(--gold); }
+
+    .btn-submit {
+      width: 100%;
+      justify-content: center;
+      padding: 14px;
+      font-size: 15px;
+      border-radius: var(--r-md);
+    }
+    .btn-submit .spinner {
+      display: none;
+      width: 18px; height: 18px;
+      border: 2px solid rgba(0,0,0,0.2);
+      border-top-color: #0a0a0f;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    .btn-submit.loading .spinner { display: block; }
+    .btn-submit.loading .btn-text { display: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .auth-divider {
+      display: flex; align-items: center; gap: 12px;
+      color: var(--text-3); font-size: 12px; margin: 20px 0;
+    }
+    .auth-divider::before, .auth-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    .btn-social {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; padding: 12px; border-radius: var(--r-md);
+      border: 1.5px solid var(--border2); background: transparent;
+      color: var(--text); font-size: 14px; font-weight: 500;
+      transition: var(--trans); cursor: pointer;
+    }
+    .btn-social:hover { border-color: var(--gold); background: rgba(201,168,76,0.05); }
+    .btn-social svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+    .auth-footer { margin-top: 24px; text-align: center; font-size: 13px; color: var(--text-3); }
+    .auth-footer a { color: var(--gold); font-weight: 500; }
+
+    @media (max-width: 900px) {
+      .auth-page { grid-template-columns: 1fr; }
+      .auth-left { display: none; }
+      .auth-right { min-height: 100vh; padding: 32px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="auth-page">
+
+  <!-- ── Left Panel ─────────────────────────────────── -->
+  <div class="auth-left">
+    <div class="auth-left-bg"></div>
+
+    <div class="auth-left-content">
+      <a href="index.html" style="font-family:var(--font-head);font-size:1.5rem;font-weight:700;color:var(--text)">
+        Stage<span style="color:var(--gold)">Book</span>
+      </a>
+    </div>
+
+    <div class="role-showcase">
+      <p style="font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:4px;position:relative;z-index:1">Dành cho cả hai</p>
+      <div class="role-card">
+        <div class="role-icon">🎤</div>
+        <div>
+          <h4>Nghệ sĩ biểu diễn</h4>
+          <p>Tạo hồ sơ, nhận booking và quản lý lịch biểu diễn của bạn</p>
+        </div>
+      </div>
+      <div class="role-card">
+        <div class="role-icon">🏢</div>
+        <div>
+          <h4>Khách hàng / Tổ chức</h4>
+          <p>Tìm kiếm và đặt lịch nghệ sĩ cho sự kiện của bạn</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="auth-left-footer">
+      <div class="stat-row">
+        <div class="stat-item">
+          <div class="num">200+</div>
+          <div class="desc">Nghệ sĩ</div>
+        </div>
+        <div class="stat-item">
+          <div class="num">1.2k</div>
+          <div class="desc">Buổi diễn</div>
+        </div>
+        <div class="stat-item">
+          <div class="num">98%</div>
+          <div class="desc">Hài lòng</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Right Panel ────────────────────────────────── -->
+  <div class="auth-right">
+    <div class="auth-form-wrap fade-up">
+
+      <a href="index.html" class="auth-logo">Stage<span>Book</span></a>
+
+      <h1 class="auth-title">Tạo tài khoản</h1>
+      <p class="auth-subtitle">Miễn phí · Không giới hạn · Bắt đầu ngay</p>
+
+      <!-- Role selector -->
+      <div class="role-selector">
+        <div>
+          <input type="radio" name="role" id="role-customer" value="customer" class="role-option" checked>
+          <label for="role-customer" class="role-label">
+            <span class="role-emoji">🏢</span>
+            <span class="role-name">Khách hàng</span>
+            <span class="role-desc">Đặt lịch nghệ sĩ</span>
+          </label>
+        </div>
+        <div>
+          <input type="radio" name="role" id="role-artist" value="artist" class="role-option">
+          <label for="role-artist" class="role-label">
+            <span class="role-emoji">🎤</span>
+            <span class="role-name">Nghệ sĩ</span>
+            <span class="role-desc">Nhận booking</span>
+          </label>
+        </div>
+      </div>
+
+      <form class="auth-form" id="register-form" novalidate>
+
+        <!-- Name row -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="first-name">Họ</label>
+            <div class="input-icon-wrap">
+              <span class="icon">👤</span>
+              <input id="first-name" type="text" class="form-control" placeholder="Nguyễn" autocomplete="given-name">
+            </div>
+            <span class="field-error" id="fname-err"></span>
+          </div>
+          <div class="form-group">
+            <label for="last-name">Tên</label>
+            <input id="last-name" type="text" class="form-control" placeholder="Văn A" autocomplete="family-name">
+            <span class="field-error" id="lname-err"></span>
+          </div>
+        </div>
+
+        <!-- Phone -->
+        <div class="form-group">
+          <label for="phone">Số điện thoại</label>
+          <div class="input-icon-wrap">
+            <span class="icon">📱</span>
+            <input id="phone" type="tel" class="form-control" placeholder="0901234567" autocomplete="tel">
+          </div>
+          <span class="field-error" id="phone-err"></span>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+          <label for="email">Email</label>
+          <div class="input-icon-wrap">
+            <span class="icon">✉</span>
+            <input id="email" type="email" class="form-control" placeholder="email@example.com" autocomplete="email">
+          </div>
+          <span class="field-error" id="email-err"></span>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+          <label for="password">Mật khẩu</label>
+          <div class="input-icon-wrap">
+            <span class="icon">🔒</span>
+            <input id="password" type="password" class="form-control" placeholder="Tối thiểu 8 ký tự" autocomplete="new-password" oninput="checkStrength(this.value)">
+            <button type="button" class="toggle-pw" onclick="togglePw('password', this)">👁</button>
+          </div>
+          <div class="pw-strength">
+            <div class="pw-strength-bar"><div class="pw-strength-fill" id="pw-fill"></div></div>
+            <span class="pw-strength-label" id="pw-label">Nhập mật khẩu</span>
+          </div>
+          <span class="field-error" id="pw-err"></span>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="form-group">
+          <label for="confirm-pw">Xác nhận mật khẩu</label>
+          <div class="input-icon-wrap">
+            <span class="icon">🔒</span>
+            <input id="confirm-pw" type="password" class="form-control" placeholder="Nhập lại mật khẩu" autocomplete="new-password">
+            <button type="button" class="toggle-pw" onclick="togglePw('confirm-pw', this)">👁</button>
+          </div>
+          <span class="field-error" id="cpw-err"></span>
+        </div>
+
+        <!-- Terms -->
+        <label class="terms-row">
+          <input type="checkbox" id="terms">
+          Tôi đồng ý với <a href="#">Điều khoản dịch vụ</a> và <a href="#">Chính sách bảo mật</a>
+        </label>
+        <span class="field-error" id="terms-err"></span>
+
+        <!-- Submit -->
+        <button type="submit" class="btn btn-gold btn-submit" id="register-btn">
+          <span class="btn-text">Tạo tài khoản miễn phí</span>
+          <span class="spinner"></span>
+        </button>
+
+      </form>
+
+      <!-- Divider -->
+      <div class="auth-divider">hoặc đăng ký với</div>
+
+      <button class="btn-social" onclick="showToast('Tính năng đang phát triển 🚧')">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+        </svg>
+        Đăng ký với Google
+      </button>
+
+      <div class="auth-footer">
+        Đã có tài khoản? <a href="login.html">Đăng nhập →</a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="js/data.js"></script>
+<script src="js/render.js"></script>
+<script>
+function togglePw(id, btn) {
+  const input = document.getElementById(id);
+  const isText = input.type === 'text';
+  input.type = isText ? 'password' : 'text';
+  btn.textContent = isText ? '👁' : '🙈';
+}
+
+function checkStrength(val) {
+  const fill  = document.getElementById('pw-fill');
+  const label = document.getElementById('pw-label');
+  let score = 0;
+  if (val.length >= 8)              score++;
+  if (/[A-Z]/.test(val))            score++;
+  if (/[0-9]/.test(val))            score++;
+  if (/[^A-Za-z0-9]/.test(val))    score++;
+
+  const levels = [
+    { w: '0%',   color: 'transparent', text: 'Nhập mật khẩu' },
+    { w: '25%',  color: '#e85a6e',     text: 'Yếu' },
+    { w: '50%',  color: '#f59e0b',     text: 'Trung bình' },
+    { w: '75%',  color: '#3b82f6',     text: 'Khá' },
+    { w: '100%', color: '#2aada8',     text: 'Mạnh 💪' },
+  ];
+  const lv = levels[Math.min(score, 4)];
+  fill.style.width    = val ? lv.w    : '0%';
+  fill.style.background = lv.color;
+  label.textContent   = val ? lv.text : 'Nhập mật khẩu';
+  label.style.color   = val ? lv.color : 'var(--text-3)';
+}
+
+document.getElementById('register-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  let valid = true;
+
+  const fields = {
+    'first-name': { el: document.getElementById('first-name'), errId: 'fname-err',  msg: 'Vui lòng nhập họ' },
+    'last-name':  { el: document.getElementById('last-name'),  errId: 'lname-err',  msg: 'Vui lòng nhập tên' },
+    'phone':      { el: document.getElementById('phone'),      errId: 'phone-err',  msg: 'Số điện thoại không hợp lệ', pattern: /^0\d{9}$/ },
+    'email':      { el: document.getElementById('email'),      errId: 'email-err',  msg: 'Email không hợp lệ', pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ },
+    'password':   { el: document.getElementById('password'),   errId: 'pw-err',     msg: 'Mật khẩu ít nhất 8 ký tự', minLen: 8 },
+  };
+
+  // Reset errors
+  Object.values(fields).forEach(f => { f.el.classList.remove('error'); document.getElementById(f.errId).textContent = ''; });
+  document.getElementById('cpw-err').textContent  = '';
+  document.getElementById('terms-err').textContent = '';
+
+  // Validate each field
+  Object.values(fields).forEach(f => {
+    const val = f.el.value.trim();
+    let err = '';
+    if (!val) { err = f.msg; }
+    else if (f.minLen && val.length < f.minLen) { err = f.msg; }
+    else if (f.pattern && !f.pattern.test(val)) { err = f.msg; }
+    if (err) { f.el.classList.add('error'); document.getElementById(f.errId).textContent = err; valid = false; }
+  });
+
+  // Confirm password
+  const pw  = document.getElementById('password').value;
+  const cpw = document.getElementById('confirm-pw');
+  if (pw && cpw.value !== pw) {
+    cpw.classList.add('error');
+    document.getElementById('cpw-err').textContent = 'Mật khẩu xác nhận không khớp';
+    valid = false;
+  }
+
+  // Terms
+  if (!document.getElementById('terms').checked) {
+    document.getElementById('terms-err').textContent = 'Bạn cần đồng ý với điều khoản để tiếp tục';
+    valid = false;
+  }
+
+  if (!valid) return;
+
+  // Submit
+  const btn = document.getElementById('register-btn');
+  btn.classList.add('loading');
+  btn.disabled = true;
+
+  setTimeout(() => {
+    // TODO: replace with real API call
+    showToast('Đăng ký thành công! Chào mừng bạn 🎉');
+    setTimeout(() => window.location.href = 'index.html', 1200);
+  }, 1600);
+});
+</script>
+</body>
+</html>

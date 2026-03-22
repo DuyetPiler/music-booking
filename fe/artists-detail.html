@@ -1,16 +1,99 @@
-<div id="detail"></div>
+<!DOCTYPE html>
+<html lang="vi">
 
-<script src="js/data.js"></script>
-<script>
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get("id");
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nghệ sĩ — StageBook</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
 
-    const artist = artists.find(a => a.id == id);
+<body>
 
-    document.getElementById("detail").innerHTML = `
-    <h2>${artist.name}</h2>
-    <p>${artist.role}</p>
-    <p>${artist.description}</p>
-    <p>Giá: ${artist.price}</p>
-`;
-</script>
+    <nav id="navbar" class="navbar"></nav>
+
+    <!-- ── Page Header ──────────────────────────────── -->
+    <div class="artists-header">
+        <div class="container">
+            <span class="label">Danh sách</span>
+            <h1>Nghệ sĩ biểu diễn</h1>
+            <p>Tìm và đặt lịch với hơn 200 nghệ sĩ chuyên nghiệp trên toàn quốc</p>
+        </div>
+    </div>
+
+    <!-- ── Main Content ─────────────────────────────── -->
+    <section class="section">
+        <div class="container">
+
+            <!-- Filter Bar -->
+            <div class="filter-bar">
+                <div class="form-group" style="flex:2;min-width:200px">
+                    <label>Tìm kiếm</label>
+                    <input id="search-input" type="search" class="form-control" placeholder="Tên nghệ sĩ, thể loại..."
+                        autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label>Loại nghệ sĩ</label>
+                    <select id="filter-type" class="form-control filter-select"></select>
+                </div>
+                <div class="form-group">
+                    <label>Thành phố</label>
+                    <select id="filter-city" class="form-control filter-select"></select>
+                </div>
+                <div class="form-group">
+                    <label>Sắp xếp</label>
+                    <select id="filter-sort" class="form-control filter-select">
+                        <option value="popular">Phổ biến nhất</option>
+                        <option value="rating">Đánh giá cao</option>
+                        <option value="price_asc">Giá: Thấp → Cao</option>
+                        <option value="price_desc">Giá: Cao → Thấp</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Result Count -->
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
+                <p style="color:var(--text-2);font-size:14px">
+                    Hiển thị <strong id="artists-count" style="color:var(--text)">0</strong> nghệ sĩ
+                </p>
+                <button class="btn btn-ghost btn-sm" onclick="resetFilters()">Xóa bộ lọc</button>
+            </div>
+
+            <!-- Grid -->
+            <div class="artists-grid" id="artists-grid">
+                <!-- Rendered by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ── CTA Bottom ────────────────────────────────── -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-inner">
+                <span class="label">Dành cho nghệ sĩ</span>
+                <h2>Muốn xuất hiện ở đây?</h2>
+                <p>Đăng ký miễn phí và bắt đầu nhận booking từ khách hàng trên toàn quốc.</p>
+                <div class="cta-buttons">
+                    <a href="#" class="btn btn-gold">Đăng ký ngay</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <span>© 2025 StageBook</span>
+                <a href="index.html" style="color:var(--gold)">← Về trang chủ</a>
+            </div>
+        </div>
+    </footer>
+
+    <div id="toast-container"></div>
+    <script src="js/navbar.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/render.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đặt lịch — StageBook</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="booking-page">
+
+    <nav id="navbar" class="navbar"></nav>
+
+    <!-- ═══════════════════════════════════════
+     BOOKING FORM STATE
+     Shown when ?success is NOT in URL
+     ════════════════════════════════════ -->
+    <div id="booking-state">
+        <div class="container">
+            <div class="booking-layout">
+
+                <!-- Form Card -->
+                <div class="booking-card fade-up">
+                    <h2>Đặt lịch biểu diễn</h2>
+                    <p>Điền thông tin bên dưới, nghệ sĩ sẽ xác nhận trong vòng 24 giờ.</p>
+
+                    <!-- Steps indicator -->
+                    <div class="booking-steps">
+                        <div class="booking-step active">Thông tin sự kiện</div>
+                        <div class="booking-step">Thông tin liên hệ</div>
+                        <div class="booking-step">Xác nhận</div>
+                    </div>
+
+                    <form id="booking-form" novalidate>
+
+                        <!-- Section: Artist -->
+                        <div style="margin-bottom:28px">
+                            <p class="label" style="margin-bottom:12px">Nghệ sĩ đã chọn</p>
+                            <div
+                                style="display:flex;align-items:center;gap:14px;padding:16px;background:var(--bg3);border-radius:var(--r-md);border:1px solid var(--border)">
+                                <div style="width:52px;height:52px;border-radius:var(--r-sm);overflow:hidden;flex-shrink:0"
+                                    id="form-artist-img"></div>
+                                <div>
+                                    <div style="font-weight:600" id="form-artist-name">—</div>
+                                    <div style="font-size:13px;color:var(--text-2)" id="form-artist-type">—</div>
+                                </div>
+                                <a href="artists.html" class="btn btn-ghost btn-sm" style="margin-left:auto">Đổi</a>
+                            </div>
+                        </div>
+
+                        <!-- Section: Event Info -->
+                        <p class="label" style="margin-bottom:16px">Thông tin sự kiện</p>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Ngày biểu diễn *</label>
+                                <input id="b-date" type="date" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Giờ bắt đầu *</label>
+                                <input id="b-time" type="time" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Số giờ biểu diễn</label>
+                                <select id="b-duration" class="form-control filter-select">
+                                    <option value="1">1 giờ</option>
+                                    <option value="2" selected>2 giờ</option>
+                                    <option value="3">3 giờ</option>
+                                    <option value="4">4 giờ+</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Loại sự kiện *</label>
+                                <select id="b-event-type" class="form-control filter-select" required>
+                                    <!-- Populated by JS -->
+                                </select>
+                            </div>
+                            <div class="form-group form-full">
+                                <label>Địa điểm tổ chức</label>
+                                <input id="b-venue" type="text" class="form-control"
+                                    placeholder="Tên địa điểm, địa chỉ...">
+                            </div>
+                        </div>
+
+                        <div class="divider"></div>
+
+                        <!-- Section: Contact -->
+                        <p class="label" style="margin-bottom:16px">Thông tin liên hệ</p>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Họ và tên *</label>
+                                <input id="b-name" type="text" class="form-control" placeholder="Nguyễn Văn A" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Số điện thoại *</label>
+                                <input id="b-phone" type="tel" class="form-control" placeholder="0901234567" required>
+                            </div>
+                            <div class="form-group form-full">
+                                <label>Email</label>
+                                <input id="b-email" type="email" class="form-control" placeholder="email@example.com">
+                            </div>
+                            <div class="form-group form-full">
+                                <label>Yêu cầu thêm</label>
+                                <textarea id="b-note" class="form-control" rows="4"
+                                    placeholder="Mô tả thêm về sự kiện, phong cách nhạc mong muốn, thiết bị cần chuẩn bị..."></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Terms -->
+                        <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;margin:24px 0">
+                            <input type="checkbox" id="b-terms" required
+                                style="margin-top:3px;width:16px;height:16px;flex-shrink:0">
+                            <span style="font-size:13px;color:var(--text-2)">
+                                Tôi đồng ý với <a href="#" style="color:var(--gold)">điều khoản sử dụng</a>
+                                và <a href="#" style="color:var(--gold)">chính sách đặt lịch</a> của StageBook.
+                            </span>
+                        </label>
+
+                        <button type="submit" class="btn btn-gold btn-lg" style="width:100%;justify-content:center">
+                            🎤 Xác nhận đặt lịch
+                        </button>
+
+                        <p style="text-align:center;font-size:12px;color:var(--text-3);margin-top:14px">
+                            Bạn sẽ nhận xác nhận qua điện thoại / email trong vòng 24h
+                        </p>
+                    </form>
+                </div>
+
+                <!-- Summary Sidebar -->
+                <aside>
+                    <div class="booking-summary">
+                        <h3>Chi tiết đặt lịch</h3>
+                        <div class="summary-artist">
+                            <div class="summary-artist-img" id="summary-img"></div>
+                            <div>
+                                <div class="summary-artist-name" id="summary-name">—</div>
+                                <div class="summary-artist-type" id="summary-type">—</div>
+                            </div>
+                        </div>
+                        <div class="summary-rows" id="summary-rows">
+                            <!-- Populated by JS -->
+                        </div>
+                        <div class="summary-total">
+                            <span class="key">Tổng chi phí</span>
+                            <span class="val" id="summary-total">—</span>
+                        </div>
+                    </div>
+
+                    <!-- Trust badges -->
+                    <div style="margin-top:20px;display:flex;flex-direction:column;gap:10px">
+                        <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text-2)">
+                            <span style="color:var(--teal);font-size:16px">✓</span> Miễn phí đặt lịch
+                        </div>
+                        <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text-2)">
+                            <span style="color:var(--teal);font-size:16px">✓</span> Xác nhận trong 24 giờ
+                        </div>
+                        <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text-2)">
+                            <span style="color:var(--teal);font-size:16px">✓</span> Hủy miễn phí trước 48h
+                        </div>
+                        <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text-2)">
+                            <span style="color:var(--teal);font-size:16px">✓</span> Hỗ trợ 24/7
+                        </div>
+                    </div>
+                </aside>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+     SUCCESS STATE
+     Shown when ?success=1 in URL
+     ════════════════════════════════════ -->
+    <div id="success-state" style="display:none">
+        <div class="success-page">
+            <div class="container">
+                <div class="success-inner">
+                    <div class="success-icon">🎉</div>
+                    <h2>Đặt lịch thành công!</h2>
+                    <p>
+                        Cảm ơn bạn đã tin tưởng StageBook. Chúng tôi đã ghi nhận yêu cầu
+                        và sẽ liên hệ xác nhận trong vòng 24 giờ.
+                    </p>
+                    <div class="booking-ref" id="success-ref">—</div>
+
+                    <div
+                        style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px;margin-bottom:32px;text-align:left">
+                        <p class="label" style="margin-bottom:16px">Tóm tắt đặt lịch</p>
+                        <div style="display:flex;flex-direction:column;gap:10px;font-size:14px">
+                            <div style="display:flex;justify-content:space-between">
+                                <span style="color:var(--text-2)">Nghệ sĩ</span>
+                                <span id="success-artist" style="font-weight:500">—</span>
+                            </div>
+                            <div style="display:flex;justify-content:space-between">
+                                <span style="color:var(--text-2)">Ngày</span>
+                                <span id="success-date" style="font-weight:500">—</span>
+                            </div>
+                            <div style="display:flex;justify-content:space-between">
+                                <span style="color:var(--text-2)">Giờ</span>
+                                <span id="success-time" style="font-weight:500">—</span>
+                            </div>
+                            <div
+                                style="display:flex;justify-content:space-between;padding-top:10px;border-top:1px solid var(--border)">
+                                <span style="color:var(--text-2)">Chi phí</span>
+                                <span id="success-price" style="font-weight:600;color:var(--gold)">—</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+                        <a href="index.html" class="btn btn-gold">Về trang chủ</a>
+                        <a href="artists.html" class="btn btn-outline">Xem nghệ sĩ khác</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <span>© 2025 StageBook</span>
+                <a href="index.html" style="color:var(--gold)">← Trang chủ</a>
+            </div>
+        </div>
+    </footer>
+
+    <div id="toast-container"></div>
+    <script src="js/data.js"></script>
+    <script src="js/render.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // Show/hide correct state
+        document.addEventListener('DOMContentLoaded', () => {
+            const isSuccess = new URLSearchParams(location.search).get('success') === '1';
+            document.getElementById('booking-state').style.display = isSuccess ? 'none' : 'block';
+            document.getElementById('success-state').style.display = isSuccess ? 'block' : 'none';
+
+            // Populate form artist info
+            if (!isSuccess) {
+                const id = new URLSearchParams(location.search).get('id');
+                const artist = getArtistById(id);
+                if (artist) {
+                    const imgEl = document.getElementById('form-artist-img');
+                    if (imgEl) imgEl.innerHTML = `<img src="${artist.img}" alt="${artist.name}" style="width:100%;height:100%;object-fit:cover">`;
+                    document.getElementById('form-artist-name').textContent = artist.name;
+                    document.getElementById('form-artist-type').textContent = artist.type;
+                } else {
+                    // No artist selected — show picker hint
+                    document.getElementById('form-artist-name').textContent = 'Chưa chọn nghệ sĩ';
+                    document.getElementById('form-artist-type').textContent = 'Vui lòng chọn từ trang nghệ sĩ';
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

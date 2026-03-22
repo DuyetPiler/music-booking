@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StageBook — Đặt nghệ sĩ biểu diễn</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- ── Navbar ─────────────────────────────────────── -->
+    <nav id="navbar" class="navbar"></nav>
+
+    <!-- ── Hero ───────────────────────────────────────── -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="container">
+            <div class="hero-content">
+                <span class="label fade-up">🎵 Marketplace nghệ sĩ biểu diễn #1 Việt Nam</span>
+                <h1 class="fade-up delay-1">
+                    Nơi âm nhạc<br>
+                    <em>gặp cơ hội</em>
+                </h1>
+                <p class="fade-up delay-2">
+                    Kết nối khách hàng với hàng trăm nghệ sĩ biểu diễn chuyên nghiệp.
+                    Tìm, xem và đặt lịch ngay trong vài phút.
+                </p>
+                <div class="hero-actions fade-up delay-3">
+                    <a href="artists.html" class="btn btn-gold btn-lg">Tìm nghệ sĩ ngay</a>
+                    <a href="#how-it-works" class="btn btn-outline">Xem cách hoạt động</a>
+                </div>
+
+                <div class="hero-stats fade-up delay-4">
+                    <div class="hero-stat">
+                        <div class="num">200<span>+</span></div>
+                        <div class="desc">Nghệ sĩ đã xác minh</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="num">1.2<span>k</span></div>
+                        <div class="desc">Buổi biểu diễn thành công</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="num">98<span>%</span></div>
+                        <div class="desc">Khách hàng hài lòng</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Decorative music SVG -->
+        <div class="hero-visual">
+            <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="200" cy="200" r="180" stroke="#c9a84c" stroke-width="0.5" stroke-dasharray="4 8" />
+                <circle cx="200" cy="200" r="120" stroke="#c9a84c" stroke-width="0.5" stroke-dasharray="2 6" />
+                <circle cx="200" cy="200" r="60" stroke="#c9a84c" stroke-width="1" />
+                <circle cx="200" cy="200" r="20" fill="#c9a84c" fill-opacity="0.3" />
+                <!-- Music notes -->
+                <text x="160" y="80" font-size="28" fill="#c9a84c" opacity="0.6">♪</text>
+                <text x="300" y="150" font-size="22" fill="#c9a84c" opacity="0.4">♫</text>
+                <text x="80" y="260" font-size="20" fill="#c9a84c" opacity="0.4">♩</text>
+                <text x="290" y="300" font-size="26" fill="#c9a84c" opacity="0.5">♬</text>
+                <!-- Equalizer bars -->
+                <rect x="175" y="185" width="8" height="30" rx="4" fill="#c9a84c" opacity="0.7" />
+                <rect x="189" y="175" width="8" height="40" rx="4" fill="#c9a84c" opacity="0.9" />
+                <rect x="203" y="190" width="8" height="25" rx="4" fill="#c9a84c" opacity="0.6" />
+                <rect x="217" y="180" width="8" height="35" rx="4" fill="#c9a84c" opacity="0.8" />
+            </svg>
+        </div>
+    </section>
+
+    <!-- ── Categories ─────────────────────────────────── -->
+    <section class="section-sm categories-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="label">Khám phá</span>
+                <h2>Tìm theo loại nghệ sĩ</h2>
+            </div>
+            <div class="categories-grid" id="categories-grid"></div>
+        </div>
+    </section>
+
+    <!-- ── Featured Artists ───────────────────────────── -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <span class="label">Nổi bật</span>
+                <h2>Nghệ sĩ được yêu thích</h2>
+                <p>Được chọn lọc dựa trên đánh giá và lượt đặt lịch từ khách hàng</p>
+            </div>
+            <div class="artists-grid" id="featured-grid"></div>
+            <div style="text-align:center;margin-top:48px">
+                <a href="artists.html" class="btn btn-outline">Xem tất cả nghệ sĩ →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── How It Works ───────────────────────────────── -->
+    <section class="section how-it-works" id="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <span class="label">Đơn giản</span>
+                <h2>Đặt lịch chỉ trong 3 bước</h2>
+                <p>Quy trình nhanh chóng, minh bạch và hoàn toàn trực tuyến</p>
+            </div>
+            <div class="steps-grid">
+                <div class="step-item fade-up">
+                    <div class="step-num">1</div>
+                    <h4>Tìm & lọc</h4>
+                    <p>Tìm kiếm nghệ sĩ theo loại hình, thể loại nhạc, địa điểm và ngân sách của bạn.</p>
+                </div>
+                <div class="step-item fade-up delay-2">
+                    <div class="step-num">2</div>
+                    <h4>Xem hồ sơ</h4>
+                    <p>Xem video, đánh giá thực tế và giá cả minh bạch trước khi quyết định đặt.</p>
+                </div>
+                <div class="step-item fade-up delay-3">
+                    <div class="step-num">3</div>
+                    <h4>Đặt lịch</h4>
+                    <p>Điền form đặt lịch, xác nhận và chờ phản hồi từ nghệ sĩ trong 24 giờ.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── CTA ────────────────────────────────────────── -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-inner">
+                <span class="label">Dành cho nghệ sĩ</span>
+                <h2>Bạn là nghệ sĩ?<br>Hãy bắt đầu kiếm thêm thu nhập</h2>
+                <p>Đăng ký miễn phí, tạo hồ sơ và nhận booking từ hàng nghìn khách hàng tiềm năng.</p>
+                <div class="cta-buttons">
+                    <a href="#" class="btn btn-gold btn-lg">Đăng ký làm nghệ sĩ</a>
+                    <a href="artists.html" class="btn btn-outline">Xem ví dụ hồ sơ</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Footer ─────────────────────────────────────── -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <span class="logo">Stage<span>Book</span></span>
+                    <p>Nền tảng kết nối nghệ sĩ biểu diễn và khách hàng hàng đầu Việt Nam.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Khám phá</h4>
+                    <ul>
+                        <li><a href="artists.html">Tất cả nghệ sĩ</a></li>
+                        <li><a href="artists.html?type=Ca+sĩ">Ca sĩ</a></li>
+                        <li><a href="artists.html?type=DJ">DJ</a></li>
+                        <li><a href="artists.html?type=Ban+nhạc">Ban nhạc</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Hỗ trợ</h4>
+                    <ul>
+                        <li><a href="#">Hướng dẫn đặt lịch</a></li>
+                        <li><a href="#">Chính sách hoàn tiền</a></li>
+                        <li><a href="#">Liên hệ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Nghệ sĩ</h4>
+                    <ul>
+                        <li><a href="#">Đăng ký</a></li>
+                        <li><a href="#">Quản lý lịch</a></li>
+                        <li><a href="#">Chính sách</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2025 StageBook. All rights reserved.</span>
+                <span>Made with ♪ in Vietnam</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/navbar.js"></script>
+    <div id="toast-container"></div>
+    <script src="js/data.js"></script>
+    <script src="js/render.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
